@@ -2,7 +2,10 @@ import boto3
 import datetime
 
 def lambda_handler(event, context):
-    now = datetime.datetime.today() - datetime.timedelta(days=1)
+    # タイムゾーンの生成
+    JST = timezone(timedelta(hours=+9), 'JST')    
+    
+    now = datetime.now(JST)
     print(now.strftime("%Y/%m/%d")) #2018/10/02
 
     client = boto3.client('athena')
@@ -12,6 +15,6 @@ def lambda_handler(event, context):
             'Database': 'vpc_flow_logs'
         },
         ResultConfiguration={
-            'OutputLocation': 's3://aws-athena-query-results-xxxxxxxx-ap-northeast-1/'
+            'OutputLocation': 's3://aws-athena-query-results-アカウント番号-ap-northeast-1/'
         }
     )
